@@ -1,0 +1,32 @@
+{
+    "Naruto": {
+      "genres": ["Action", "Adventure", "Fantasy"]
+    },
+    "Death Note": {
+      "genres": ["Mystery", "Psychological", "Supernatural", "Thriller"]
+    },
+    "Attack on Titan": {
+      "genres": ["Action", "Dark Fantasy", "Post-apocalyptic"]
+    },
+    "One Punch Man": {
+      "genres": ["Action", "Comedy", "Superhero"]
+    },
+    "My Hero Academia": {
+      "genres": ["Superhero", "Action", "Comedy"]
+    },
+    "Fullmetal Alchemist: Brotherhood": {
+      "genres": ["Adventure", "Dark Fantasy", "Steampunk"]
+    },
+    "Demon Slayer": {
+      "genres": ["Adventure", "Dark Fantasy", "Martial Arts"]
+    },
+    "Steins;Gate": {
+      "genres": ["Sci-Fi", "Thriller", "Time Travel"]
+    },
+    "Hunter x Hunter": {
+      "genres": ["Adventure", "Fantasy", "Martial Arts"]
+    },
+    "Code Geass": {
+      "genres": ["Mecha", "Alternate History", "Military"]
+    }
+  }

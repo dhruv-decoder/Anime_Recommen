@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Recommender</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a2e;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #16213e;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            color: #e94560;
+        }
+        #animeList {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+        .anime-item {
+            background-color: #0f3460;
+            color: #ffffff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .anime-item:hover {
+            background-color: #e94560;
+        }
+        .anime-item.selected {
+            background-color: #e94560;
+        }
+        button {
+            background-color: #e94560;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #ff6b6b;
+        }
+        #recommendations {
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Anime Recommender</h1>
+        <div id="animeList"></div>
+        <button id="recommendBtn">Get Recommendations</button>
+        <div id="recommendations"></div>
+    </div>
+
+    <script>
+        const animeList = [
+            "Naruto", "Death Note", "Attack on Titan", "One Punch Man",
+            "My Hero Academia", "Fullmetal Alchemist: Brotherhood",
+            "Demon Slayer", "Steins;Gate", "Hunter x Hunter", "Code Geass"
+        ];
+
+        const animeListElement = document.getElementById('animeList');
+        const recommendBtn = document.getElementById('recommendBtn');
+        const recommendationsElement = document.getElementById('recommendations');
+
+        let selectedAnime = new Set();
+
+        function createAnimeItem(anime) {
+            const item = document.createElement('div');
+            item.classList.add('anime-item');
+            item.textContent = anime;
+            item.addEventListener('click', () => toggleAnime(item, anime));
+            return item;
+        }
+
+        function toggleAnime(item, anime) {
+            if (selectedAnime.has(anime)) {
+                selectedAnime.delete(anime);
+                item.classList.remove('selected');
+            } else {
+                selectedAnime.add(anime);
+                item.classList.add('selected');
+            }
+        }
+
+        animeList.forEach(anime => {
+            animeListElement.appendChild(createAnimeItem(anime));
+        });
+
+        recommendBtn.addEventListener('click', async () => {
+            if (selectedAnime.size === 0) {
+                alert('Please select at least one anime!');
+                return;
+            }
+
+            const response = await fetch('/recommend', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ anime: Array.from(selectedAnime) }),
+            });
+
+            const data = await response.json();
+            displayRecommendations(data.recommendations);
+        });
+
+        function displayRecommendations(recommendations) {
+            recommendationsElement.innerHTML = '<h2>Recommendations:</h2>';
+            if (recommendations.length === 0) {
+                recommendationsElement.innerHTML += '<p>No recommendations found.</p>';
+            } else {
+                const list = document.createElement('ul');
+                recommendations.forEach(anime => {
+                    const item = document.createElement('li');
+                    item.textContent = anime;
+                    list.appendChild(item);
+                });
+                recommendationsElement.appendChild(list);
+            }
+        }
+    </script>
+</body>
+</html>
